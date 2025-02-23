@@ -412,5 +412,5 @@ pub struct ObservationState {
 }
 
 impl ObservationState {
-    pub const LEN: usize = 8 + 1 + 32 + (Observation::LEN * OBSERVATION_NUM) + 16 * 5;
+    pub const LEN: usize = 8 + 1 + 8 + 2 + 32 + (Observation::LEN * OBSERVATION_NUM) + 8 * 4;
 }
