@@ -384,15 +384,14 @@ impl TickArrayBitmapExtension {
 pub struct Observation {
     /// The block timestamp of the observation
     pub block_timestamp: u32,
-    /// the price of the observation timestamp, Q64.64
-    pub sqrt_price_x64: u128,
-    /// the cumulative of price during the duration time, Q64.64
-    pub cumulative_time_price_x64: u128,
+    /// the cumulative of tick during the duration time
+    pub tick_cumulative: i64,
     /// padding for feature update
-    pub padding: u128,
+    pub padding: [u64; 4],
 }
+
 impl Observation {
-    pub const LEN: usize = 4 + 16 + 16 + 16;
+    pub const LEN: usize = 4 + 8 + 8 * 4;
 }
 
 #[account(zero_copy(unsafe))]
@@ -400,11 +399,16 @@ impl Observation {
 pub struct ObservationState {
     /// Whether the ObservationState is initialized
     pub initialized: bool,
+    /// recent update epoch
+    pub recent_epoch: u64,
+    /// the most-recently updated index of the observations array
+    pub observation_index: u16,
+    /// belongs to which pool
     pub pool_id: Pubkey,
     /// observation array
     pub observations: [Observation; OBSERVATION_NUM],
     /// padding for feature update
-    pub padding: [u128; 5],
+    pub padding: [u64; 4],
 }
 
 impl ObservationState {
